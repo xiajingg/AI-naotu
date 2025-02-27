@@ -1,0 +1,28 @@
+<div class="markdown-import">
+    <div class="markdown-editor">
+        <textarea ng-model="markdownContent" ng-change="convertToMindmap()" placeholder="请输入 Markdown 文本..."></textarea>
+    </div>
+    <div class="markdown-toolbar">
+        <!-- <button class="btn btn-primary" ng-click="importMarkdown()">导入思维导图</button> -->
+        <button class="btn btn-default" ng-click="clearMarkdown()">清空</button>
+    </div>
+    <div class="ai-chat-section">
+        <div class="model-selector">
+            <select ng-model="selectedModel" ng-change="onModelChange()" class="form-control">
+                <option value="">选择大模型</option>
+                <option ng-repeat="model in modelList" value="{{model.name}}">{{model.name}}</option>
+            </select>
+        </div>
+        <div class="chat-area" ng-show="selectedModel">
+            <div class="chat-messages" id="chatMessages">
+                <div ng-repeat="message in chatMessages" class="message" ng-class="message.role">
+                    <div class="message-content">{{message.content}}</div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea ng-model="userMessage" placeholder="输入消息..." class="form-control"></textarea>
+                <button class="btn btn-primary" ng-click="sendMessage()" ng-disabled="!userMessage">发送</button>
+            </div>
+        </div>
+    </div>
+</div>

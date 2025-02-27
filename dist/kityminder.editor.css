@@ -99,6 +99,86 @@ div.minder-editor-container {
   position: absolute;
   z-index: -1;
 }
+.markdown-import {
+  position: absolute;
+  right: 0;
+  top: 92px;
+  width: 250px;
+  background: #fff;
+  border-left: 1px solid #ccc;
+  z-index: 3;
+  padding: 10px;
+}
+.markdown-import .markdown-editor {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.markdown-import .markdown-editor textarea {
+  width: 100%;
+  height: 300px;
+  resize: vertical;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.markdown-import .markdown-toolbar {
+  text-align: right;
+}
+.markdown-import .markdown-toolbar .btn {
+  margin-left: 5px;
+}
+.markdown-import .ai-chat-section {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+.markdown-import .ai-chat-section .model-selector {
+  margin-bottom: 10px;
+}
+.markdown-import .ai-chat-section .model-selector select {
+  width: 100%;
+  font-size: 12px;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages {
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages .message {
+  margin-bottom: 8px;
+  padding: 5px;
+  border-radius: 4px;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages .message.user {
+  background: #e8f4ff;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages .message.assistant {
+  background: #f5f5f5;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages .message.error {
+  background: #fff0f0;
+  color: #ff4444;
+}
+.markdown-import .ai-chat-section .chat-area .chat-messages .message .message-content {
+  word-wrap: break-word;
+}
+.markdown-import .ai-chat-section .chat-area .chat-input textarea {
+  width: 100%;
+  height: 60px;
+  resize: none;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+.markdown-import .ai-chat-section .chat-area .chat-input .btn {
+  width: 100%;
+}
+.minder-editor {
+  margin-right: 250px;
+}
 .top-tab .nav-tabs {
   background-color: #e1e1e1;
   border: 0;

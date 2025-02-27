@@ -174,7 +174,9 @@ angular.module('kityminderEditor')
 						'expandtolevel5': '展开到五级节点',
 						'expandtolevel6': '展开到六级节点',
 						'fullscreen': '全屏',
-						'outline': '大纲'
+						'outline': '大纲',
+						'export_km': '导出.km',
+						'export_png': '导出.png'
 					},
 
 					'search':'搜索',
@@ -189,7 +191,8 @@ angular.module('kityminderEditor')
 					'tabs': {
 						'idea': '思路',
 						'appearence': '外观',
-						'view': '视图'
+						'view': '视图',
+						'export':'导出'
 					},
 
 					'quickvisit': {

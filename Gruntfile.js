@@ -102,13 +102,20 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                banner: banner
+                banner: banner,
+                compress: {
+                    unused: false
+                },
+                output: {
+                    ascii_only: true
+                },
+                mangle: true,
+                ie8: true
             },
             minimize: {
-                files: [{
-	                src: 'dist/kityminder.editor.js',
-	                dest: 'dist/kityminder.editor.min.js'
-                }]
+                files: {
+                    'dist/kityminder.editor.min.js': 'dist/kityminder.editor.js'
+                }
             }
         },
 

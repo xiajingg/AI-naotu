@@ -45,14 +45,17 @@
     "grunt-wiredep": "^2.0.0",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^3.1.0",
-    "uglify-js": "^2.8.29"
+    "uglify-js": "^2.8.29",
+    "hotbox": "1.0.2"
   },
   "dependencies": {
+    "angular": "^1.7.9",
+    "angular-bootstrap": "^0.12.2",
+    "bootstrap": "^3.4.1",
+    "codemirror": "^5.65.2",
+    "color-picker": "0.0.1",
+    "jquery": "^2.2.4",
+    "kity": "^2.0.4",
     "kityminder-core": "^1.4.50"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

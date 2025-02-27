@@ -23,4 +23,7 @@
         <select-all minder="minder"></select-all>
         <search-btn minder="minder"></search-btn>
     </tab>
+    <tab heading="{{ 'export' | lang: 'ui/tabs'; }}" ng-click="toggleTopTab('export')" select="setCurTab('export')">
+        <export-panel minder="minder"></export-panel>
+    </tab>
 </tabset>

@@ -1,9 +1,9 @@
 /*!
  * ====================================================
- * kityminder-editor - v1.0.67 - 2019-02-12
+ * kityminder-editor - v1.0.67 - 2025-02-27
  * https://github.com/fex-team/kityminder-editor
  * GitHub: https://github.com/fex-team/kityminder-editor 
- * Copyright (c) 2019 ; Licensed 
+ * Copyright (c) 2025 ; Licensed 
  * ====================================================
  */
 
@@ -2099,6 +2099,11 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
   );
 
 
+  $templateCache.put('ui/directive/exportPanel/exportPanel.html',
+    "<div class=\"km-btn-group export-group\"><div class=\"km-btn-item\" ng-click=\"exportKm()\" title=\"{{ 'export_km' | lang:'ui/command' }}\"><i class=\"km-btn-icon\"></i> <span class=\"km-btn-caption\">{{ 'export_km' | lang:'ui/command' }}</span></div><div class=\"km-btn-item\" ng-click=\"exportPng()\" title=\"{{ 'export_png' | lang:'ui/command' }}\"><i class=\"km-btn-icon\"></i> <span class=\"km-btn-caption\">{{ 'export_png' | lang:'ui/command' }}</span></div></div>"
+  );
+
+
   $templateCache.put('ui/directive/fontOperator/fontOperator.html',
     "<div class=\"font-operator\"><div class=\"dropdown font-family-list\" dropdown><div class=\"dropdown-toggle current-font-item\" dropdown-toggle ng-disabled=\"minder.queryCommandState('fontfamily') === -1\"><a href class=\"current-font-family\" title=\"{{ 'fontfamily' | lang: 'ui' }}\">{{ getFontfamilyName(minder.queryCommandValue('fontfamily')) || '字体' }}</a> <span class=\"caret\"></span></div><ul class=\"dropdown-menu font-list\"><li ng-repeat=\"f in fontFamilyList\" class=\"font-item-wrap\"><a ng-click=\"minder.execCommand('fontfamily', f.val)\" class=\"font-item\" ng-class=\"{ 'font-item-selected' : f == minder.queryCommandValue('fontfamily') }\" ng-style=\"{'font-family': f.val }\">{{ f.name }}</a></li></ul></div><div class=\"dropdown font-size-list\" dropdown><div class=\"dropdown-toggle current-font-item\" dropdown-toggle ng-disabled=\"minder.queryCommandState('fontsize') === -1\"><a href class=\"current-font-size\" title=\"{{ 'fontsize' | lang: 'ui' }}\">{{ minder.queryCommandValue('fontsize') || '字号' }}</a> <span class=\"caret\"></span></div><ul class=\"dropdown-menu font-list\"><li ng-repeat=\"f in fontSizeList\" class=\"font-item-wrap\"><a ng-click=\"minder.execCommand('fontsize', f)\" class=\"font-item\" ng-class=\"{ 'font-item-selected' : f == minder.queryCommandValue('fontsize') }\" ng-style=\"{'font-size': f + 'px'}\">{{ f }}</a></li></ul></div><span class=\"s-btn-icon font-bold\" ng-click=\"minder.queryCommandState('bold') === -1 || minder.execCommand('bold')\" ng-class=\"{'font-bold-selected' : minder.queryCommandState('bold') == 1}\" ng-disabled=\"minder.queryCommandState('bold') === -1\"></span> <span class=\"s-btn-icon font-italics\" ng-click=\"minder.queryCommandState('italic') === -1 || minder.execCommand('italic')\" ng-class=\"{'font-italics-selected' : minder.queryCommandState('italic') == 1}\" ng-disabled=\"minder.queryCommandState('italic') === -1\"></span><div class=\"font-color-wrap\"><span class=\"quick-font-color\" ng-click=\"minder.queryCommandState('forecolor') === -1 || minder.execCommand('forecolor', foreColor)\" ng-disabled=\"minder.queryCommandState('forecolor') === -1\">A</span> <span color-picker class=\"font-color\" set-color=\"setDefaultColor()\" ng-disabled=\"minder.queryCommandState('forecolor') === -1\"><span class=\"caret\"></span></span> <span class=\"font-color-preview\" ng-style=\"{ 'background-color': foreColor }\" ng-click=\"minder.queryCommandState('forecolor') === -1 || minder.execCommand('forecolor', foreColor)\" ng-disabled=\"minder.queryCommandState('forecolor') === -1\"></span></div><color-panel minder=\"minder\" class=\"inline-directive\"></color-panel></div>"
   );
@@ -2115,7 +2120,7 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
 
 
   $templateCache.put('ui/directive/kityminderEditor/kityminderEditor.html',
-    "<div class=\"minder-editor-container\"><div class=\"top-tab\" top-tab=\"minder\" editor=\"editor\" ng-if=\"minder\"></div><div search-box minder=\"minder\" ng-if=\"minder\"></div><div class=\"minder-editor\"></div><div class=\"km-note\" note-editor minder=\"minder\" ng-if=\"minder\"></div><div class=\"note-previewer\" note-previewer ng-if=\"minder\"></div><div class=\"navigator\" navigator minder=\"minder\" ng-if=\"minder\"></div></div>"
+    "<div class=\"minder-editor-container\"><div class=\"top-tab\" top-tab=\"minder\" editor=\"editor\" ng-if=\"minder\"></div><div search-box minder=\"minder\" ng-if=\"minder\"></div><export-btn minder=\"minder\" ng-if=\"minder\"></export-btn><markdown-import minder=\"minder\" ng-if=\"minder\"></markdown-import><div class=\"minder-editor\"></div><div class=\"km-note\" note-editor minder=\"minder\" ng-if=\"minder\"></div><div class=\"note-previewer\" note-previewer ng-if=\"minder\"></div><div class=\"navigator\" navigator minder=\"minder\" ng-if=\"minder\"></div></div>"
   );
 
 
@@ -2126,6 +2131,11 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
 
   $templateCache.put('ui/directive/layout/layout.html',
     "<div class=\"readjust-layout\"><a ng-click=\"minder.queryCommandState('resetlayout') === -1 || minder.execCommand('resetlayout')\" class=\"btn-wrap\" ng-disabled=\"minder.queryCommandState('resetlayout') === -1\"><span class=\"btn-icon reset-layout-icon\"></span> <span class=\"btn-label\">{{ 'resetlayout' | lang: 'ui/command' }}</span></a></div>"
+  );
+
+
+  $templateCache.put('ui/directive/markdownImport/markdownImport.html',
+    "<div class=\"markdown-import\"><div class=\"markdown-editor\"><textarea ng-model=\"markdownContent\" ng-change=\"convertToMindmap()\" placeholder=\"请输入 Markdown 文本...\"></textarea></div><div class=\"markdown-toolbar\"><button class=\"btn btn-default\" ng-click=\"clearMarkdown()\">清空</button></div><div class=\"ai-chat-section\"><div class=\"model-selector\"><select ng-model=\"selectedModel\" ng-change=\"onModelChange()\" class=\"form-control\"><option value=\"\">选择大模型</option><option ng-repeat=\"model in modelList\" value=\"{{model.name}}\">{{model.name}}</option></select></div><div class=\"chat-area\" ng-show=\"selectedModel\"><div class=\"chat-messages\" id=\"chatMessages\"><div ng-repeat=\"message in chatMessages\" class=\"message\" ng-class=\"message.role\"><div class=\"message-content\">{{message.content}}</div></div></div><div class=\"chat-input\"><textarea ng-model=\"userMessage\" placeholder=\"输入消息...\" class=\"form-control\"></textarea><button class=\"btn btn-primary\" ng-click=\"sendMessage()\" ng-disabled=\"!userMessage\">发送</button></div></div></div></div>"
   );
 
 
@@ -2210,7 +2220,7 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
 
 
   $templateCache.put('ui/directive/topTab/topTab.html',
-    "<tabset><tab heading=\"{{ 'idea' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('idea')\" select=\"setCurTab('idea')\"><undo-redo editor=\"editor\"></undo-redo><append-node minder=\"minder\"></append-node><arrange minder=\"minder\"></arrange><operation minder=\"minder\"></operation><hyper-link minder=\"minder\"></hyper-link><image-btn minder=\"minder\"></image-btn><note-btn minder=\"minder\"></note-btn><priority-editor minder=\"minder\"></priority-editor><progress-editor minder=\"minder\"></progress-editor><resource-editor minder=\"minder\"></resource-editor></tab><tab heading=\"{{ 'appearence' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('appearance')\" select=\"setCurTab('appearance')\"><template-list minder=\"minder\" class=\"inline-directive\"></template-list><theme-list minder=\"minder\"></theme-list><layout minder=\"minder\" class=\"inline-directive\"></layout><style-operator minder=\"minder\" class=\"inline-directive\"></style-operator><font-operator minder=\"minder\" class=\"inline-directive\"></font-operator></tab><tab heading=\"{{ 'view' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('view')\" select=\"setCurTab('view')\"><expand-level minder=\"minder\"></expand-level><select-all minder=\"minder\"></select-all><search-btn minder=\"minder\"></search-btn></tab></tabset>"
+    "<tabset><tab heading=\"{{ 'idea' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('idea')\" select=\"setCurTab('idea')\"><undo-redo editor=\"editor\"></undo-redo><append-node minder=\"minder\"></append-node><arrange minder=\"minder\"></arrange><operation minder=\"minder\"></operation><hyper-link minder=\"minder\"></hyper-link><image-btn minder=\"minder\"></image-btn><note-btn minder=\"minder\"></note-btn><priority-editor minder=\"minder\"></priority-editor><progress-editor minder=\"minder\"></progress-editor><resource-editor minder=\"minder\"></resource-editor></tab><tab heading=\"{{ 'appearence' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('appearance')\" select=\"setCurTab('appearance')\"><template-list minder=\"minder\" class=\"inline-directive\"></template-list><theme-list minder=\"minder\"></theme-list><layout minder=\"minder\" class=\"inline-directive\"></layout><style-operator minder=\"minder\" class=\"inline-directive\"></style-operator><font-operator minder=\"minder\" class=\"inline-directive\"></font-operator></tab><tab heading=\"{{ 'view' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('view')\" select=\"setCurTab('view')\"><expand-level minder=\"minder\"></expand-level><select-all minder=\"minder\"></select-all><search-btn minder=\"minder\"></search-btn></tab><tab heading=\"{{ 'export' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('export')\" select=\"setCurTab('export')\"><export-panel minder=\"minder\"></export-panel></tab></tabset>"
   );
 
 
@@ -2492,7 +2502,9 @@ angular.module('kityminderEditor')
 						'expandtolevel5': '展开到五级节点',
 						'expandtolevel6': '展开到六级节点',
 						'fullscreen': '全屏',
-						'outline': '大纲'
+						'outline': '大纲',
+						'export_km': '导出.km',
+						'export_png': '导出.png'
 					},
 
 					'search':'搜索',
@@ -2507,7 +2519,8 @@ angular.module('kityminderEditor')
 					'tabs': {
 						'idea': '思路',
 						'appearence': '外观',
-						'view': '视图'
+						'view': '视图',
+						'export':'导出'
 					},
 
 					'quickvisit': {
@@ -3366,6 +3379,39 @@ angular.module('kityminderEditor')
         }
     });
 angular.module('kityminderEditor')
+    .directive('exportPanel', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'ui/directive/exportPanel/exportPanel.html',
+            scope: {
+                minder: '='
+            },
+            replace: true,
+            link: function($scope) {
+                $scope.exportKm = function() {
+                    var json = $scope.minder.exportJson();
+                    var blob = new Blob([JSON.stringify(json)], {
+                        type: 'application/json'
+                    });
+                    var url = URL.createObjectURL(blob);
+                    var link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'mindmap.km';
+                    link.click();
+                };
+
+                $scope.exportPng = function() {
+                    $scope.minder.exportData('png').then(function(data) {
+                        var link = document.createElement('a');
+                        link.href = data;
+                        link.download = 'mindmap.png';
+                        link.click();
+                    });
+                };
+            }
+        };
+    });
+angular.module('kityminderEditor')
 	.directive('fontOperator', function() {
 		return {
 			restrict: 'E',
@@ -3637,6 +3683,301 @@ angular.module('kityminderEditor')
 			}
 		}
 	});
+angular.module('kityminderEditor')
+    .directive('markdownImport', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'ui/directive/markdownImport/markdownImport.html',
+            scope: {
+                minder: '='
+            },
+            controller: ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+                $scope.markdownContent = '';
+                $scope.modelList = [];
+                $scope.selectedModel = '';
+                $scope.userMessage = '';
+                $scope.chatMessages = [];
+
+                // 获取可用的模型列表
+                function fetchModelList() {
+                    $http({
+                        method: 'GET',
+                        url: 'http://localhost:3001/api/models'
+                    })
+                    .then(function(response) {
+                        if (response.data && response.data.models) {
+                            $scope.modelList = response.data.models;
+                        } else {
+                            console.error('获取模型列表失败: 数据格式不正确');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('获取模型列表失败:', error);
+                    });
+                }
+
+                // 初始化时获取模型列表
+                fetchModelList();
+
+                // 当选择模型变化时
+                $scope.onModelChange = function() {
+                    if ($scope.selectedModel) {
+                        $scope.chatMessages = [];
+                    }
+                };
+
+                // 发送消息给模型
+                $scope.sendMessage = function() {
+                    if (!$scope.userMessage || !$scope.selectedModel) return;
+
+                    $scope.chatMessages.push({
+                        role: 'user',
+                        content: $scope.userMessage
+                    });
+
+                    var message = $scope.userMessage;
+                    $scope.userMessage = '';
+
+                    // 使用固定的 JSON 字符串模板
+                    var prompt = message+', 数据严格参照下面的json格式：{"root":{"data":{"id":"d68jsqbo2y80","created":1733887432829,"text":"小程序推广"},"children":[{"data":{"id":"d68jsuf1i740","created":1733887441741,"text":"技术社区"},"children":[{"data":{"id":"d68jszaz4400","created":1733887452379,"text":"撰写技术博客"},"children":[]},{"data":{"id":"d68jttfqqs00","created":1733887517970,"text":"案例分享"},"children":[]},{"data":{"id":"d68jtxj0tdk0","created":1733887526876,"text":"开源贡献"},"children":[]}]},{"data":{"id":"d68ju0bjdx40","created":1733887532954,"text":"社交网络"},"children":[{"data":{"id":"d68ju78p8i80","created":1733887548019,"text":"小红书，抖音等。讲述产品故事"},"children":[]},{"data":{"id":"d68jubigmfs0","created":1733887557317,"text":"发起互动活动"},"children":[]}]},{"data":{"id":"d68jumx4d6w0","created":1733887582148,"text":"身边"},"children":[{"data":{"id":"d68jv7w3wuw0","created":1733887627799,"text":"分享朋友圈"},"children":[]},{"data":{"id":"d68jvddt15k0","created":1733887639753,"text":"分享微信群"},"children":[]}]},{"data":{"id":"d68jvp6lb140","created":1733887665438,"text":"SEO"},"children":[{"data":{"id":"d68jvr5yowo0","created":1733887669754,"text":"软件技术层面通过搜索引擎优化（SEO）"},"children":[]}]},{"data":{"id":"d68jw1ega2o0","created":1733887692035,"text":"产品用户裂变"},"children":[{"data":{"id":"d68jw8kb2680","created":1733887707626,"text":"分享奖励"},"children":[]},{"data":{"id":"d68jwb2var40","created":1733887713102,"text":"每日活动"},"children":[]},{"data":{"id":"d68jwfiauig0","created":1733887722743,"text":"产品社区频道"},"children":[]}]}]},"template":"right","theme":"fresh-blue","version":"1.4.43"}';
+
+                    // 创建一个新的消息对象用于显示助手的回复
+                    var assistantMessage = {
+                        role: 'assistant',
+                        content: ''
+                    };
+                    $scope.chatMessages.push(assistantMessage);
+
+                    // 发送POST请求到服务器
+                    fetch('http://localhost:3001/api/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: $scope.selectedModel,
+                            prompt: prompt
+                        })
+                    })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        var reader = response.body.getReader();
+                        var fullResponse = '';
+                        
+                        function processStream() {
+                            return reader.read().then(function(result) {
+                                var done = result.done;
+                                var value = result.value;
+                                
+                                if (done) {
+                                    return;
+                                }
+                                
+                                // 将 Uint8Array 转换为文本
+                                var chunk = new TextDecoder().decode(value);
+                                var lines = chunk.split('\n');
+                                
+                                lines.forEach(function(line) {
+                                    if (line.trim()) {
+                                        try {
+                                            var data = JSON.parse(line.replace(/^data: /, ''));
+                                            console.log('55555data:', data);
+                                            if (data.error) {
+                                                $scope.$apply(function() {
+                                                    assistantMessage.content = '发送消息失败：' + data.error;
+                                                    assistantMessage.role = 'error';
+                                                });
+                                            } else if (data.response) {
+                                                $scope.$apply(function() {
+                                                    assistantMessage.content += data.response;
+                                                    fullResponse += data.response;
+                                                });
+                                                // 使用 $timeout 确保视图更新并滚动到最新消息
+                                                $timeout(function() {
+                                                    var chatMessages = document.getElementById('chatMessages');
+                                                    if (chatMessages) {
+                                                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                                                    }
+                                                }, 0);
+                                                console.log('66666data.done:', data.done);
+                                            }
+                                            if (data.done) {
+                                                console.log('收到完整的响应:', fullResponse);
+                                                // 改进JSON匹配逻辑
+                                                var jsonMatch = fullResponse.match(/```json\s*([\s\S]*?)```/) || fullResponse.match(/\{[\s\S]*?\}/g);
+                                                if (jsonMatch) {
+                                                    try {
+                                                        var jsonStr = (jsonMatch[1] || jsonMatch[0]).trim();
+                                                        var mindmapData = JSON.parse(jsonStr);
+                                                        
+                                                        if (mindmapData && (mindmapData.root || mindmapData.data)) {
+                                                            $scope.$apply(function() {
+                                                                $scope.markdownContent = JSON.stringify(mindmapData, null, 2);
+                                                                $scope.convertToMindmap();
+                                                            });
+                                                        } else {
+                                                            console.error('无效的思维导图数据结构');
+                                                        }
+                                                    } catch (e) {
+                                                        console.error('解析JSON数据失败:', e);
+                                                        console.error('JSON字符串:', jsonStr);
+                                                    }
+                                                }
+                                            }
+                                        } catch (e) {
+                                            console.error('解析响应数据失败:', e);
+                                        }
+                                    }
+                                });
+                                
+                                return processStream();
+                            });
+                        }
+                        
+                        return processStream();
+                    })
+                    .catch(function(error) {
+                        console.error('请求失败:', error);
+                        $scope.$apply(function() {
+                            if (!assistantMessage.content) {
+                                assistantMessage.content = '连接失败，请重试';
+                                assistantMessage.role = 'error';
+                            }
+                        });
+                    });
+                };
+
+                // 将 Markdown 文本转换为思维导图数据结构
+                function parseMarkdown(text) {
+                    // 尝试解析 JSON 格式
+                    try {
+                        var jsonData = JSON.parse(text);
+                        if (jsonData.root) {
+                            return jsonData.root;
+                        }
+                        return jsonData;
+                    } catch (e) {
+                        // 如果不是 JSON 格式，按照原来的 Markdown 格式处理
+                        var lines = text.split('\n').filter(function(line) {
+                            return line.trim();
+                        });
+                    
+                        // 如果没有内容，返回默认的空白思维导图
+                        if (lines.length === 0) {
+                            return {
+                                data: { text: '中心主题' },
+                                children: []
+                            };
+                        }
+                    
+                        var root = null;
+                        var currentLevel = 0;
+                        var nodeStack = [];
+                    
+                        for (var i = 0; i < lines.length; i++) {
+                            var line = lines[i];
+                            var headingMatch = line.match(/^(#+)\s+(.+)/);
+                    
+                            if (headingMatch) {
+                                var level = headingMatch[1].length;
+                                var text = headingMatch[2].trim();
+                    
+                                // 创建节点
+                                var node = {
+                                    data: { text: text },
+                                    children: []
+                                };
+                    
+                                // 如果是第一个标题，将其设置为根节点
+                                if (!root) {
+                                    root = node;
+                                    nodeStack = [root];
+                                    continue;
+                                }
+                    
+                                // 调整节点栈，确保正确的层级关系
+                                while (nodeStack.length > level) {
+                                    nodeStack.pop();
+                                }
+                    
+                                // 如果需要填充中间层级，使用序号标记
+                                while (nodeStack.length < level) {
+                                    var lastNode = nodeStack[nodeStack.length - 1];
+                                    var newNode = {
+                                        data: { text: '分支主题 ' + (lastNode.children.length + 1) },
+                                        children: []
+                                    };
+                                    lastNode.children.push(newNode);
+                                    nodeStack.push(newNode);
+                                }
+                    
+                                // 添加当前节点到父节点
+                                var parent = nodeStack[nodeStack.length - 1];
+                                parent.children.push(node);
+                                nodeStack[level] = node;
+                            } else {
+                                // 处理普通文本行
+                                var text = line.trim();
+                                if (text) {
+                                    // 如果还没有根节点，将第一行文本作为根节点
+                                    if (!root) {
+                                        root = {
+                                            data: { text: text },
+                                            children: []
+                                        };
+                                        nodeStack = [root];
+                                    } else {
+                                        // 将文本作为当前节点的子节点
+                                        var node = {
+                                            data: { text: text },
+                                            children: []
+                                        };
+                                        var parent = nodeStack[nodeStack.length - 1];
+                                        parent.children.push(node);
+                                    }
+                                }
+                            }
+                        }
+                    
+                        return root;
+                    }
+                }
+
+                // 实时预览转换效果
+                $scope.convertToMindmap = function() {
+                    if (!$scope.markdownContent) return;
+                    try {
+                        var data = parseMarkdown($scope.markdownContent);
+                        $scope.minder.importJson(data);
+                    } catch (error) {
+                        console.error('转换失败:', error);
+                    }
+                };
+
+                // 导入思维导图
+                $scope.importMarkdown = function() {
+                    if (!$scope.markdownContent) return;
+                    try {
+                        var data = parseMarkdown($scope.markdownContent);
+                        $scope.minder.importJson(data);
+                    } catch (error) {
+                        console.error('导入失败:', error);
+                    }
+                };
+
+                // 清空内容
+                $scope.clearMarkdown = function() {
+                    $scope.markdownContent = '';
+                    $scope.minder.importJson({
+                        data: { text: '中心主题' },
+                        children: []
+                    });
+                };
+            }]
+        };
+    });
 /**
  * @fileOverview
  *
