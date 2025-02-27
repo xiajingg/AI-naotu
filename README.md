@@ -1,9 +1,7 @@
-KityMinder Editor
+AI-naotu
 ==========
 
 ## 简介
-
-KityMinder Editor 是一款强大、简洁、体验优秀的脑图编辑工具，适合用于编辑树/图/网等结构的数据。
 
 编辑器由百度 [FEX](https://github.com/fex-team) 基于 [kityminder-core](https://github.com/fex-team/kityminder-core) 搭建，并且在[百度脑图](http://naotu.baidu.com)中使用。
 
@@ -26,6 +24,9 @@ KityMinder Editor 是一款强大、简洁、体验优秀的脑图编辑工具�
 然后要部署一个 node server 即可,因为调用ollam的接口会有cors的限制
 
 按顺序执行下面脚本,访问dist文件夹里面的index.html即可, 执行失败缺少什么就安装什么
+
 node server/server.js 
+
 npm run init 或者加上 --force --legacy-peer-deps
+
 grunt build 
